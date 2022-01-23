@@ -1,30 +1,37 @@
-<form
-    hx-put="/update/{{ todo.id }}/"
-    hx-target="this"
-    hx-swap="outerHTML"
->
-    <article class="flex{% if todo.is_done %} bg-green-50{% endif %}">
-        <div class="w-4/5 py-3">
-            <p class="px-6 text-xs text-gray-900">{{ todo.title }}</p>
-        </div>
+<article class="flex{% if todo.is_done %} bg-green-50{% endif %}">
+    <div class="w-4/5 py-3">
+        <p 
+            class="px-6 text-xs text-gray-900"
+            hx-get="/edit/{{ todo.id }}/"
+            hx-target="this"
+            hx-swap="outerHTML"
+        >
+            {{ todo.title }}
+        </p>
+    </div>
 
-        <div class="w-1/5 px-6 py-3 flex justify-end space-x-4">
-            {% if not todo.is_done %}
+    <div class="w-1/5 px-6 py-3 flex justify-end space-x-4">
+        {% if not todo.is_done %}
+            <form
+                hx-put="/update/{{ todo.id }}/"
+                hx-target="closest article"
+                hx-swap="outerHTML"
+            >
                 <button class="text-sky-600 hover:text-sky-900">
                     Done
                 </button>
-            {% endif %}
+            </form>
+        {% endif %}
 
-            <a 
-                href="#" 
-                class="text-sky-600 hover:text-sky-900"
-                hx-confirm="Are you sure?"
-                hx-target="closest form"
-                hx-swap="outerHTML swap:1s"
-                hx-delete="/delete/{{ todo.id }}/"
-            >
-                Delete
-            </a>
-        </div>
-    </article>
-</form>
+        <a 
+            href="#" 
+            class="text-sky-600 hover:text-sky-900"
+            hx-confirm="Are you sure?"
+            hx-target="closest article"
+            hx-swap="outerHTML swap:1s"
+            hx-delete="/delete/{{ todo.id }}/"
+        >
+            Delete
+        </a>
+    </div>
+</article>
